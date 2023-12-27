@@ -22,38 +22,38 @@ function App() {
 
         <Navbar></Navbar>
         <Routes>
-          <Route path='/' element={
+          <Route exact path='/' element={
             <Home></Home>
           }></Route>
           
-          <Route path='/business' element={
+          <Route exact path='/business' element={
             <Business></Business>
           }></Route>
 
-          <Route path='/entertainment' element={
+          <Route exact path='/entertainment' element={
             <Entertainment></Entertainment>
           }></Route>
 
-          <Route path='/general' element={
+          <Route exact path='/general' element={
             <General></General>
           }></Route>
 
-          <Route path='/health' element={
+          <Route exact path='/health' element={
             <Health></Health>
           }></Route>
 
-          <Route path='/science' element={
+          <Route exact path='/science' element={
             <Science></Science>
           }></Route>
 
-          <Route path='/sports' element={
+          <Route exact path='/sports' element={
             <Sports></Sports>
           }></Route>
 
-          <Route path='/technology' element={
+          <Route exact path='/technology' element={
             <Technology></Technology>
           }></Route>
-          <Route path='/*' element={
+          <Route exact path='/*' element={
             <NotFound></NotFound>
           }></Route>
 
