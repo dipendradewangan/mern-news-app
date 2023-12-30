@@ -1,4 +1,4 @@
-export const country = [{
+export const countries = [{
 
     iso: "ae",
     name: "United Arab Emirates"
@@ -268,3 +268,4 @@ export const country = [{
     iso: "za",
     name: "South Africa"
 }]
+
