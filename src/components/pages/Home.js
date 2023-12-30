@@ -22,26 +22,23 @@ const Home = () => {
     return (
         <Fragment>
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 ">
-                <div className='w-[100%] grid grid-cols-3 gap-8 p-8 rounded-lg bg-gray-200 my-6 border border-red-500'>
-                    <form className='flex gap-4 justify-between  border border-blue-600' style={{ "background-color": "red", "width": "100%" }}>
-                        <div className='w-full border border-pink-400'>
-                            <input />
-                        </div>
-                        <div className='w-full border border-pink-400'>
-                            <select className='w-60'>
-                                {
-                                    countries.map((country, index) => {
-                                        return <option value={country.iso} key={index}>{country.name}</option>
-                                    })
-                                }
-                            </select>
+                <div className='w-full gap-8 p-8 rounded-lg bg-gray-200 my-4 flex'>
+                    
+                        <div className='w-full flex border-b-2 border-black  '>
+                            <input className='w-full h-full ' />
+                            <button type='submit' className=''>Search</button>
                         </div>
 
-                    </form>
 
-
+                        <select className='w-60 rounded-md p-1'>
+                            {
+                                countries.map((country, index) => {
+                                    return <option className='font-sans font-thin' value={country.iso} key={index}>{country.name}</option>
+                                })
+                            }
+                        </select>
+                    
                 </div>
-
 
                 <div className='w-full grid grid-cols-3 gap-8 p-8 rounded-lg bg-gray-200'>
                     {/* cards */}
