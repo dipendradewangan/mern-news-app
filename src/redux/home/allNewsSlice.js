@@ -3,9 +3,17 @@ import { fetchAllNews } from './allNewsApi'
 
 export const fetchAllNewsAsync = createAsyncThunk(
     'news/fetchAllNews',
-    async () => {
-        const response = await fetchAllNews();
+    async (country) => {
+        const response = await fetchAllNews(country);
         return response.data;
+    }
+)
+
+
+export const fetchTopHeadling = createAsyncThunk(
+    'news/topHeadlineNews',
+    async (country)=>{
+        const response = await fetchTopHeadline(country);
     }
 )
 

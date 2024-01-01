@@ -15,15 +15,16 @@ const News = () => {
     const dispatch = useDispatch()
     const topHeadlineNews = useSelector(selectAllNews)
     const [country, setCountry] = useState('in')
+    const [topHeadingSroll, setTopHeadingScroll] = useState(1)
 
     useEffect(() => {
-        dispatch(fetchAllNewsAsync())
-    }, [dispatch])
+        dispatch(fetchAllNewsAsync(country))
+    }, [dispatch, country])
 
 
 
-    const handleContry = (value)=>{
-        console.log(value)
+    const handleContry = (value) => {
+        dispatch(fetchAllNewsAsync(value))
     }
 
 
@@ -32,6 +33,9 @@ const News = () => {
     return (
         <Fragment>
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 ">
+
+                <h1 className='font-bold text-gray-700 text-3xl my-5'>Welcome to News App</h1>
+
                 <div className='w-full  p-8 rounded-lg bg-gray-200 my-4'>
                     <div className='flex justify-between gap-8 '>
 
@@ -43,7 +47,7 @@ const News = () => {
 
                         <div className='flex items-center bg-white gap-2 border border-black px-3 rounded-lg'>
                             <h1 className='font-semibold '>Country:</h1>
-                            <select className='w-60 rounded-md p-1 outline-none' defaultValue={country} onChange={(e)=>handleContry(e.target.value)}>
+                            <select className='w-60 rounded-md p-1 outline-none' defaultValue={country} onChange={(e) => handleContry(e.target.value)}>
                                 {
                                     countries.map((c, index) => {
                                         return <option className='font-sans font-thin' value={c.iso} key={index}>{c.name}</option>
@@ -103,11 +107,17 @@ const News = () => {
                             </div>
 
 
-                            <div className='flex justify-between font-semibold text-gray-600 text-[10px] '>
+                            <div className='flex justify-between font-semibold text-gray-600 text-[10px] mb-5'>
                                 <p>{moment().startOf('day').fromNow()}</p>
                                 <p>
                                     {"moment(newsItem.publishedAt).format('MMMM Do YYYY')"}
                                 </p>
+                            </div>
+                            <div className='flex items-center flex-col  font-semibold text-gray-600 text-[10px]'>
+                               
+                                <div>
+                                    <p>1/20</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -115,7 +125,7 @@ const News = () => {
                         <ArrowForwardIosIcon />
                     </button>
                 </div>
-                {/* top headline */}
+                {/* top everything */}
                 <div className='w-full grid grid-cols-3 gap-8 p-8 rounded-lg bg-gray-200'>
                     {/* cards */}
                     {

@@ -16,35 +16,35 @@ function App() {
         <Navbar></Navbar>
         <Routes>
           <Route exact path='/' element={
-            <News></News>
+            <News title='home'></News>
           }></Route>
           
           <Route exact path='/business' element={
-            <News></News>
+            <News title='business'></News>
           }></Route>
 
           <Route exact path='/entertainment' element={
-            <News></News>
+            <News title='entertainment'></News>
           }></Route>
 
           <Route exact path='/general' element={
-            <News></News>
+            <News title='general'></News>
           }></Route>
 
           <Route exact path='/health' element={
-            <News></News>
+            <News title='health'></News>
           }></Route>
 
           <Route exact path='/science' element={
-            <News></News>
+            <News title='science'></News>
           }></Route>
 
           <Route exact path='/sports' element={
-            <News></News>
+            <News title='sports'></News>
           }></Route>
 
           <Route exact path='/technology' element={
-            <News></News>
+            <News title='technology'></News>
           }></Route>
           <Route exact path='/*' element={
             <NotFound></NotFound>
