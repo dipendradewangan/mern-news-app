@@ -16,7 +16,7 @@ function App() {
         <Navbar></Navbar>
         <Routes>
           <Route exact path='/' element={
-            <News title='home'></News>
+            <News title='general'></News>
           }></Route>
           
           <Route exact path='/business' element={
@@ -27,9 +27,6 @@ function App() {
             <News title='entertainment'></News>
           }></Route>
 
-          <Route exact path='/general' element={
-            <News title='general'></News>
-          }></Route>
 
           <Route exact path='/health' element={
             <News title='health'></News>

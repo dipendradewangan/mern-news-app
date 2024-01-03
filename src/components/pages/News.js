@@ -11,15 +11,16 @@ import { countries } from '../../jsonApis/country';
 
 
 
-const News = () => {
+const News = ({ title }) => {
     const dispatch = useDispatch()
     const topHeadlineNews = useSelector(selectAllNews)
     const [country, setCountry] = useState('in')
     const [topHeadingSroll, setTopHeadingScroll] = useState(1)
+    console.log(title)
 
     useEffect(() => {
-        dispatch(fetchAllNewsAsync(country))
-    }, [dispatch, country])
+        dispatch(fetchAllNewsAsync({ country, title }))
+    }, [dispatch, country, title])
 
 
 
@@ -34,7 +35,7 @@ const News = () => {
         <Fragment>
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 ">
 
-                <h1 className='font-bold text-gray-700 text-3xl my-5'>Welcome to News App</h1>
+                <h1 className='font-bold text-gray-700 text-3xl my-5'>{title === 'general'? "Welcome To News App" : "Top "+title+" Headlines"}</h1>
 
                 <div className='w-full  p-8 rounded-lg bg-gray-200 my-4'>
                     <div className='flex justify-between gap-8 '>
@@ -61,14 +62,14 @@ const News = () => {
 
                 {/* top headline */}
 
-                <div className='w-full  p-8 rounded-lg bg-gray-200 my-4 flex justify-between gap-3'>
+                {/* <div className='w-full  p-8 rounded-lg bg-gray-200 my-4 flex justify-between gap-3'>
                     <button className='w-10'>
                         <ArrowBackIosIcon />
                     </button>
                     <div className='flex flex-col justify-between h-full w-full bg-white rounded-lg p-8'>
                         <div className='flex flex-col justify-between h-full'>
                             <div>
-                                {/* news sourse */}
+                                news sourse
                                 <div className='mb-3 flex justify-between items-center font-bold text-[12px] text-gray-500'>
                                     <div className='flex gap-2 items-center'>
                                         <NewspaperIcon sx={"font-size : 15px"} />
@@ -82,20 +83,20 @@ const News = () => {
                                     </div>
                                 </div>
 
-                                {/* news thumbnail */}
+                                news thumbnail
                                 <div className='rounded-md mb-1 w-full overflow-hidden gap-8 grid grid-cols-2'>
                                     <div className='rounded-lg overflow-hidden'>
                                         <img src={"https://nypost.com/wp-content/uploads/sites/2/2023/12/newspress-collage-64mb2lryz-1703925140771.jpg?quality=75&strip=all&1703907220&w=1024"} alt='news' />
                                     </div>
 
                                     <div>
-                                        {/* news title */}
+                                        news title
                                         <div className='flex justify-between font-normal text-gray-600 text-3xl mb-3'>
                                             <h1>Paula Abdul sues 'American Idol' executive Nigel Lythgoe for alleged sexual assault - New York Post </h1>
                                         </div>
 
 
-                                        {/* news descriptoin */}
+                                        news descriptoin
                                         <div className='mb-3'>
                                             <p className='font-[15px]'>Paula Abdul accused former American Idol and So You Think You Can Dance producer Nigel Lythgoe of allegedly sexually assaulting her multiple times, according to a lawsuit filed Friday in Los Angeles.… [+4488 chars]</p>
                                         </div>
@@ -114,7 +115,7 @@ const News = () => {
                                 </p>
                             </div>
                             <div className='flex items-center flex-col  font-semibold text-gray-600 text-[10px]'>
-                               
+
                                 <div>
                                     <p>1/20</p>
                                 </div>
@@ -124,7 +125,9 @@ const News = () => {
                     <button className='w-10'>
                         <ArrowForwardIosIcon />
                     </button>
-                </div>
+                </div>  */}
+
+
                 {/* top everything */}
                 <div className='w-full grid grid-cols-3 gap-8 p-8 rounded-lg bg-gray-200'>
                     {/* cards */}

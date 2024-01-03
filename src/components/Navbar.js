@@ -8,7 +8,6 @@ const navigation = [
     { name: 'Home', link: '/', current: true },
     { name: 'Business', link: '/business', current: false },
     { name: 'Entertainment', link: '/entertainment', current: false },
-    { name: 'General', link: '/general', current: false },
     { name: 'Health', link: '/health', current: false },
     { name: 'Science', link: '/science', current: false },
     { name: 'Sports', link: '/sports', current: false },
