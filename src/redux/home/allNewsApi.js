@@ -6,3 +6,13 @@ export const fetchAllNews = (country, title)=>{
     })
 }
 
+
+
+export const fetchEverythingNews = ()=>{
+    return new Promise(async (resolve)=>{
+        const response = await fetch()
+        const data = await response.json();
+        console.log(data);
+        resolve({data})
+    })
+}

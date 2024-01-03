@@ -5,6 +5,7 @@ import NotFound from './components/pages/NotFound'
 
 import './App.css';
 import Navbar from './components/Navbar';
+import Loader from './components/pages/Loader';
 
 
 
@@ -44,7 +45,7 @@ function App() {
             <News title='technology'></News>
           }></Route>
           <Route exact path='/*' element={
-            <NotFound></NotFound>
+            <Loader></Loader>
           }></Route>
 
         </Routes>
