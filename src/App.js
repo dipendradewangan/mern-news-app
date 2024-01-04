@@ -45,7 +45,7 @@ function App() {
             <News title='technology'></News>
           }></Route>
           <Route exact path='/*' element={
-            <Loader></Loader>
+            <NotFound></NotFound>
           }></Route>
 
         </Routes>
