@@ -38,4 +38,5 @@ const allNewsSlice = createSlice({
 
 export const selectAllNews = (state)=>state.allNews.newsData
 export const selectTotalAllNews = (state)=>state.allNews.totalNews
+export const selectLoader = (state)=>state.allNews.status
 export default allNewsSlice.reducer
