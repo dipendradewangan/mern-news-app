@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ClearIcon from '@mui/icons-material/Clear';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +18,8 @@ const News = ({ title }) => {
     const topHeadlineNews = useSelector(selectAllNews)
     const loaderStatus = useSelector(selectLoader)
     const [country, setCountry] = useState('in')
+    const [searchString, setSearchString] = useState('')
+    const [clearSearchButton, setClearSearchButton] = useState(false)
     console.log(country)
 
     useEffect(() => {
@@ -32,7 +35,18 @@ const News = ({ title }) => {
     }
 
 
-    console.log(topHeadlineNews)
+    const handleSearch = (value) => {
+        setSearchString(value)
+        setClearSearchButton(true)
+        console.log(searchString)
+    }
+
+    const triggerClearSearch = () => {
+        setClearSearchButton(false)
+        setSearchString('')
+    }
+
+
 
     return (
         <Fragment>
@@ -48,8 +62,11 @@ const News = ({ title }) => {
 
 
                                 <div className='w-full flex border px-3 border-black bg-white rounded-lg focus:shadow-transparent'>
-                                    <input className='w-full h-full outline-none' />
-                                    <button type='submit' className=''>Search</button>
+                                    <input value={searchString} placeholder='Search anything' onInput={(e) => handleSearch(e.target.value)} className='w-full h-full outline-none' />
+                                    {
+                                        clearSearchButton ? <button onClick={()=>triggerClearSearch()}><ClearIcon></ClearIcon></button> : ""
+                                    }
+                                    
                                 </div>
 
                                 <div className='flex items-center bg-white gap-2 border border-black px-3 rounded-lg'>
