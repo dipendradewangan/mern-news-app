@@ -18,7 +18,7 @@ const initialState = {
 }
 
 const topHeadlinesSlice = createSlice({
-    name: 'allNews',
+    name: 'topHeadlines',
     initialState,
     reducers: {
 

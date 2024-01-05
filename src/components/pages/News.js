@@ -11,34 +11,35 @@ import { Link } from 'react-router-dom';
 import { countries } from '../../jsonApis/country';
 import Loader from '../pages/Loader'
 import { fetchTopHeadlinesAsync, selectLoader, selectTopHeadlines } from '../../redux/topHeadlines/topHeadlinesSlice';
+import { fetchEverythingsAsync, selectEverythingNews } from '../../redux/everythings/everythingSlice';
 
 
 
 const News = ({ title }) => {
     const dispatch = useDispatch()
     const topHeadlineNews = useSelector(selectTopHeadlines)
+    const everythingNews = useSelector(selectEverythingNews)
     const loaderStatus = useSelector(selectLoader)
-    console.log(loaderStatus)
     const [country, setCountry] = useState('in')
     const [searchString, setSearchString] = useState('')
     const [clearSearchButton, setClearSearchButton] = useState(false)
-    console.log(country)
 
     useEffect(() => {
         dispatch(fetchTopHeadlinesAsync({ country, title }))
     }, [dispatch, country, title])
-
-
-
+    
+    
+    
     const handleContry = (value) => {
         setCountry(value)
         dispatch(fetchTopHeadlinesAsync(value))
     }
-
-
+    
+    
     const handleSearch = (value) => {
         setSearchString(value)
         setClearSearchButton(true)
+        dispatch(fetchEverythingsAsync(value));
         console.log(searchString)
     }
 
