@@ -5,33 +5,34 @@ import ClearIcon from '@mui/icons-material/Clear';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllNewsAsync, selectAllNews, selectLoader } from '../../redux/home/allNewsSlice';
+
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { countries } from '../../jsonApis/country';
 import Loader from '../pages/Loader'
+import { fetchTopHeadlinesAsync, selectLoader, selectTopHeadlines } from '../../redux/topHeadlines/topHeadlinesSlice';
 
 
 
 const News = ({ title }) => {
     const dispatch = useDispatch()
-    const topHeadlineNews = useSelector(selectAllNews)
+    const topHeadlineNews = useSelector(selectTopHeadlines)
     const loaderStatus = useSelector(selectLoader)
+    console.log(loaderStatus)
     const [country, setCountry] = useState('in')
     const [searchString, setSearchString] = useState('')
     const [clearSearchButton, setClearSearchButton] = useState(false)
     console.log(country)
 
     useEffect(() => {
-        dispatch(fetchAllNewsAsync({ country, title }))
+        dispatch(fetchTopHeadlinesAsync({ country, title }))
     }, [dispatch, country, title])
 
 
 
     const handleContry = (value) => {
         setCountry(value)
-
-        dispatch(fetchAllNewsAsync(value))
+        dispatch(fetchTopHeadlinesAsync(value))
     }
 
 

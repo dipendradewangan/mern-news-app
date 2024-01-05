@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterSlice from './home/counterSlice'
-import allNewsSlice from './home/allNewsSlice'
+import topHeadlinesSlice from './topHeadlines/topHeadlinesSlice'
 
 
 
 export const store = configureStore({
     reducer: {
-        counter: counterSlice,
-        allNews : allNewsSlice
+        topHeadlines : topHeadlinesSlice
     }
 })
