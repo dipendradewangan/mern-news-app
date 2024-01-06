@@ -4,8 +4,8 @@ import { fetchEverything } from "./everythingsAPI";
 
 export const fetchEverythingsAsync = createAsyncThunk(
     'news/everythings',
-    async () => {
-        const response = await fetchEverything();
+    async (searchString) => {
+        const response = await fetchEverything(searchString);
         return response.data;
     }
 )
@@ -34,7 +34,7 @@ export const EverythingSlice = createSlice({
 })
 
 
-export const selectEverythingNews = (state)=>state
+export const selectEverythingNews = (state)=>state.everythings.newsData
 
 
 export default EverythingSlice.reducer;
