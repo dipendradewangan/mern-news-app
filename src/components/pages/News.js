@@ -18,18 +18,32 @@ import { fetchEverythingsAsync, selectEverythingNews } from '../../redux/everyth
 const News = ({ title }) => {
     const dispatch = useDispatch()
     const topHeadlineNews = useSelector(selectTopHeadlines)
+    console.log(topHeadlineNews)
     const everythingNews = useSelector(selectEverythingNews)
     console.log(everythingNews);
     const loaderStatus = useSelector(selectLoader)
     const [country, setCountry] = useState('in')
     const [searchString, setSearchString] = useState('')
     const [clearSearchButton, setClearSearchButton] = useState(false)
-
+    const [showHeadlineNum, setShowHeadlineNum] = useState(0)
+    console.log(showHeadlineNum)
     useEffect(() => {
         dispatch(fetchTopHeadlinesAsync({ country, title }))
     }, [dispatch, country, title])
 
 
+    const scrollNews = (value, totolTopHeadline) => {
+        if(totolTopHeadline === showHeadlineNum && value !== -1){
+            setShowHeadlineNum(showHeadlineNum)
+        }
+        else if(value === -1 && showHeadlineNum === 0){
+            setShowHeadlineNum(showHeadlineNum)
+        }
+        else{
+            setShowHeadlineNum(showHeadlineNum + value)
+        }
+
+    }
 
     const handleContry = (value) => {
         setCountry(value)
@@ -50,6 +64,7 @@ const News = ({ title }) => {
     const triggerClearSearch = () => {
         setClearSearchButton(false)
         setSearchString('')
+        setShowHeadlineNum(0)
     }
 
 
@@ -91,140 +106,217 @@ const News = ({ title }) => {
 
                         {/* top headline */}
                         {
-                            clearSearchButton ? "added omponent" : ""
+                            clearSearchButton ? <div className='w-full  p-8 rounded-lg bg-gray-200 my-4 flex flex-col gap-8'>
+                                <h1 className='col-span-3 font-bold'>Top Headlines</h1>
+                                <div className='flex justify-between gap-8'>
+                                    {/* prev button */}
+                                    <button className='w-10' onClick={() => scrollNews(-1, topHeadlineNews.length-1)}>
+                                        <ArrowBackIosIcon />
+                                    </button>
+                                    <div className='flex w-[100%] bg-white rounded-lg p-8 overflow-hidden'>
+                                        {
+                                            // top headline news card
+                                            <div className='w-full'>
+                                                <div>
+                                                    {/* news sourse */}
+                                                    <div className='mb-3 flex justify-between items-center font-bold text-[12px] text-gray-500'>
+                                                        <div className='flex gap-2 items-center'>
+                                                            <NewspaperIcon sx={"font-size : 15px"} />
+                                                            <p>BY {topHeadlineNews[showHeadlineNum].author}</p>
+                                                        </div>
+
+                                                        <div className='flex gap-0 items-center'>
+                                                            <FavoriteBorderIcon sx={"font-size : 15px"} />
+                                                            <p>11K</p>
+
+                                                        </div>
+                                                    </div>
+
+                                                    {/* news thumbnail */}
+                                                    <div className='rounded-md mb-1 w-full overflow-hidden gap-8 grid grid-cols-2'>
+                                                        <div className='rounded-lg overflow-hidden'>
+                                                            <img src={topHeadlineNews[showHeadlineNum].urlToImage} alt='news' />
+                                                        </div>
+
+                                                        <div>
+                                                            {/* news title */}
+                                                            <div className='flex justify-between font-normal text-gray-600 text-3xl mb-3'>
+                                                                <h1>{topHeadlineNews[showHeadlineNum].title}</h1>
+                                                            </div>
+
+
+                                                            {/* news descriptoin */}
+                                                            <div className='mb-3'>
+                                                                <p className='font-[15px]'>{topHeadlineNews[showHeadlineNum].description}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+
+
+                                                <div className='flex justify-between font-semibold text-gray-600 text-[10px] mb-5'>
+                                                    <p>{moment().startOf('day').fromNow()}</p>
+                                                    <p>
+                                                        {"moment(newsItem.publishedAt).format('MMMM Do YYYY')"}
+                                                    </p>
+                                                </div>
+                                                <div className='flex items-center flex-col  font-semibold text-gray-600 text-[10px]'>
+
+                                                    <div>
+                                                        <p>{showHeadlineNum + 1}/{topHeadlineNews.length}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        }
+
+                                    </div>
+                                    {/* next button */}
+                                    <button className='w-10' onClick={() => scrollNews(1, topHeadlineNews.length-1)}>
+                                        <ArrowForwardIosIcon />
+                                    </button>
+                                </div>
+
+                            </div> : ""
                         }
 
                         {/* displaced components */}
 
                         {
-                            everythingNews && <div className='w-full grid grid-cols-3 gap-8 p-8 rounded-lg bg-gray-200'>
-                                    {/* <h1>Search result</h1> */}
-                                    {
-                                        everythingNews.length === 0 ?
-                                            "No Search Items"
-                                            : everythingNews.map((newsItem, index) => {
-                                                if (newsItem.title === '[Removed]') {
-                                                    return ''
-                                                }
-                                                return <Link key={index} to={newsItem.url}>
-                                                    <div className='bg-white p-6 rounded-md hover:bg-gray-100'>
-                                                        <div className='flex flex-col justify-between h-full'>
-                                                            <div>
-                                                                {/* news sourse */}
-                                                                <div className='mb-3 flex justify-between items-center font-bold text-[12px] text-gray-500'>
-                                                                    <div className='flex gap-2 items-center'>
-                                                                        <NewspaperIcon sx={"font-size : 15px"} />
-                                                                        <p>BY {newsItem.author}</p>
-                                                                    </div>
-
-                                                                    <div className='flex gap-0 items-center'>
-                                                                        <FavoriteBorderIcon sx={"font-size : 15px"} />
-                                                                        <p>11K</p>
-
-                                                                    </div>
+                            clearSearchButton ? everythingNews && <div className='w-full grid grid-cols-3 gap-8 p-8 rounded-lg bg-gray-200'>
+                                <h1 className='col-span-3 font-bold'>Search result</h1>
+                                {
+                                    everythingNews.length === 0 ?
+                                        "No Search Items"
+                                        : everythingNews.map((newsItem, index) => {
+                                            if (newsItem.title === '[Removed]') {
+                                                return ''
+                                            }
+                                            return <Link key={index} to={newsItem.url}>
+                                                <div className='bg-white p-6 rounded-md hover:bg-gray-100'>
+                                                    <div className='flex flex-col justify-between h-full'>
+                                                        <div>
+                                                            {/* news sourse */}
+                                                            <div className='mb-3 flex justify-between items-center font-bold text-[12px] text-gray-500'>
+                                                                <div className='flex gap-2 items-center'>
+                                                                    <NewspaperIcon sx={"font-size : 15px"} />
+                                                                    <p>BY {newsItem.author}</p>
                                                                 </div>
 
-                                                                {/* news thumbnail */}
-                                                                <div className='rounded-md mb-1 h-[150px] w-full overflow-hidden flex justify-center items-center'>
+                                                                <div className='flex gap-0 items-center'>
+                                                                    <FavoriteBorderIcon sx={"font-size : 15px"} />
+                                                                    <p>11K</p>
 
-                                                                    <img src={newsItem.urlToImage} alt='news' />
                                                                 </div>
+                                                            </div>
 
-                                                                {/* news title */}
-                                                                <div className='flex justify-between font-normal text-gray-600 text-3xl mb-3'>
-                                                                    <h1>{newsItem.title}</h1>
-                                                                </div>
+                                                            {/* news thumbnail */}
+                                                            <div className='rounded-md mb-1 h-[150px] w-full overflow-hidden flex justify-center items-center'>
 
+                                                                <img src={newsItem.urlToImage} alt='news' />
+                                                            </div>
 
-                                                                {/* news descriptoin */}
-                                                                <div className='mb-3'>
-                                                                    <p className='font-[15px]'>{newsItem.description}</p>
-                                                                </div>
-
+                                                            {/* news title */}
+                                                            <div className='flex justify-between font-normal text-gray-600 text-3xl mb-3'>
+                                                                <h1>{newsItem.title}</h1>
                                                             </div>
 
 
-                                                            <div className='flex justify-between font-semibold text-gray-600 text-[10px] '>
-                                                                <p>{moment().startOf('day').fromNow()}</p>
-                                                                <p>
-                                                                    {moment(newsItem.publishedAt).format('MMMM Do YYYY')}
-                                                                </p>
+                                                            {/* news descriptoin */}
+                                                            <div className='mb-3'>
+                                                                <p className='font-[15px]'>{newsItem.description}</p>
                                                             </div>
+
+                                                        </div>
+
+
+                                                        <div className='flex justify-between font-semibold text-gray-600 text-[10px] '>
+                                                            <p>{moment().startOf('day').fromNow()}</p>
+                                                            <p>
+                                                                {moment(newsItem.publishedAt).format('MMMM Do YYYY')}
+                                                            </p>
                                                         </div>
                                                     </div>
-                                                </Link>
-                                            })
-                                    }
+                                                </div>
+                                            </Link>
+                                        })
+                                }
 
 
-                                </div>
+                            </div> : ''
 
                         }
 
                         {/* top everything */}
-                        <div className='w-full grid grid-cols-3 gap-8 p-8 rounded-lg bg-gray-200'>
-                            {/* cards */}
-                            {
-                                topHeadlineNews.length === 0 ?
-                                    <div className='w-full text-center col-span-3'>
-                                        <h1 className='font-bold'>No news from selected Country</h1>
-                                    </div>
-                                    : topHeadlineNews.map((newsItem, index) => {
-                                        if (newsItem.title === '[Removed]') {
-                                            return ''
-                                        }
-                                        return <Link key={index} to={newsItem.url}>
-                                            <div className='bg-white p-6 rounded-md hover:bg-gray-100'>
-                                                <div className='flex flex-col justify-between h-full'>
-                                                    <div>
-                                                        {/* news sourse */}
-                                                        <div className='mb-3 flex justify-between items-center font-bold text-[12px] text-gray-500'>
-                                                            <div className='flex gap-2 items-center'>
-                                                                <NewspaperIcon sx={"font-size : 15px"} />
-                                                                <p>BY {newsItem.author}</p>
+                        {
+                            clearSearchButton ? "" : <div className='w-full grid grid-cols-3 gap-8 p-8 rounded-lg bg-gray-200'>
+                                {/* cards */}
+                                {
+                                    topHeadlineNews.length === 0 ?
+                                        <div className='w-full text-center col-span-3'>
+                                            <h1 className='font-bold'>No news from selected Country</h1>
+                                        </div>
+                                        : topHeadlineNews.map((newsItem, index) => {
+                                            if (newsItem.title === '[Removed]') {
+                                                return ''
+                                            }
+                                            return <Link key={index} to={newsItem.url}>
+                                                <div className='bg-white p-6 rounded-md hover:bg-gray-100'>
+                                                    <div className='flex flex-col justify-between h-full'>
+                                                        <div>
+                                                            {/* news sourse */}
+                                                            <div className='mb-3 flex justify-between items-center font-bold text-[12px] text-gray-500'>
+                                                                <div className='flex gap-2 items-center'>
+                                                                    <NewspaperIcon sx={"font-size : 15px"} />
+                                                                    <p>BY {newsItem.author}</p>
+                                                                </div>
+
+                                                                <div className='flex gap-0 items-center'>
+                                                                    <FavoriteBorderIcon sx={"font-size : 15px"} />
+                                                                    <p>11K</p>
+
+                                                                </div>
                                                             </div>
 
-                                                            <div className='flex gap-0 items-center'>
-                                                                <FavoriteBorderIcon sx={"font-size : 15px"} />
-                                                                <p>11K</p>
+                                                            {/* news thumbnail */}
+                                                            <div className='rounded-md mb-1 h-[150px] w-full overflow-hidden flex justify-center items-center'>
 
+                                                                <img src={newsItem.urlToImage} alt='news' />
                                                             </div>
+
+                                                            {/* news title */}
+                                                            <div className='flex justify-between font-normal text-gray-600 text-3xl mb-3'>
+                                                                <h1>{newsItem.title}</h1>
+                                                            </div>
+
+
+                                                            {/* news descriptoin */}
+                                                            <div className='mb-3'>
+                                                                <p className='font-[15px]'>{newsItem.description}</p>
+                                                            </div>
+
                                                         </div>
 
-                                                        {/* news thumbnail */}
-                                                        <div className='rounded-md mb-1 h-[150px] w-full overflow-hidden flex justify-center items-center'>
 
-                                                            <img src={newsItem.urlToImage} alt='news' />
+                                                        <div className='flex justify-between font-semibold text-gray-600 text-[10px] '>
+                                                            <p>{moment().startOf('day').fromNow()}</p>
+                                                            <p>
+                                                                {moment(newsItem.publishedAt).format('MMMM Do YYYY')}
+                                                            </p>
                                                         </div>
-
-                                                        {/* news title */}
-                                                        <div className='flex justify-between font-normal text-gray-600 text-3xl mb-3'>
-                                                            <h1>{newsItem.title}</h1>
-                                                        </div>
-
-
-                                                        {/* news descriptoin */}
-                                                        <div className='mb-3'>
-                                                            <p className='font-[15px]'>{newsItem.description}</p>
-                                                        </div>
-
-                                                    </div>
-
-
-                                                    <div className='flex justify-between font-semibold text-gray-600 text-[10px] '>
-                                                        <p>{moment().startOf('day').fromNow()}</p>
-                                                        <p>
-                                                            {moment(newsItem.publishedAt).format('MMMM Do YYYY')}
-                                                        </p>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </Link>
-                                    })
-                            }
+                                            </Link>
+                                        })
+                                }
 
 
-                        </div>
+                            </div>
+                        }
+
                     </div>
 
                 }
