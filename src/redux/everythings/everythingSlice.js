@@ -4,8 +4,8 @@ import { fetchEverything } from "./everythingsAPI";
 
 export const fetchEverythingsAsync = createAsyncThunk(
     'news/everythings',
-    async (searchString) => {
-        const response = await fetchEverything(searchString);
+    async ({searchString, page}) => {
+        const response = await fetchEverything(searchString, page);
         return response.data;
     }
 )

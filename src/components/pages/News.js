@@ -12,34 +12,33 @@ import { countries } from '../../jsonApis/country';
 import Loader from '../pages/Loader'
 import { fetchTopHeadlinesAsync, selectLoader, selectTopHeadlines } from '../../redux/topHeadlines/topHeadlinesSlice';
 import { fetchEverythingsAsync, selectEverythingNews } from '../../redux/everythings/everythingSlice';
+import Pagination from './Pagination';
 
 
 
 const News = ({ title }) => {
     const dispatch = useDispatch()
     const topHeadlineNews = useSelector(selectTopHeadlines)
-    console.log(topHeadlineNews)
     const everythingNews = useSelector(selectEverythingNews)
-    console.log(everythingNews);
     const loaderStatus = useSelector(selectLoader)
     const [country, setCountry] = useState('in')
     const [searchString, setSearchString] = useState('')
     const [clearSearchButton, setClearSearchButton] = useState(false)
     const [showHeadlineNum, setShowHeadlineNum] = useState(0)
-    console.log(showHeadlineNum)
+    const [page, setPage] = useState({ pageNum: 1, newsPerPage: 18 })
     useEffect(() => {
-        dispatch(fetchTopHeadlinesAsync({ country, title }))
+        dispatch(fetchTopHeadlinesAsync({ country, title, page }))
     }, [dispatch, country, title])
 
 
     const scrollNews = (value, totolTopHeadline) => {
-        if(totolTopHeadline === showHeadlineNum && value !== -1){
+        if (totolTopHeadline === showHeadlineNum && value !== -1) {
             setShowHeadlineNum(showHeadlineNum)
         }
-        else if(value === -1 && showHeadlineNum === 0){
+        else if (value === -1 && showHeadlineNum === 0) {
             setShowHeadlineNum(showHeadlineNum)
         }
-        else{
+        else {
             setShowHeadlineNum(showHeadlineNum + value)
         }
 
@@ -51,15 +50,20 @@ const News = ({ title }) => {
     }
 
 
-    const handleSearch = (value) => {
-        if (value.length !== 0) {
+    const handleSearch = (searchString) => {
+        if (searchString.length !== 0) {
             setClearSearchButton(true)
         } else {
             setClearSearchButton(false)
         }
-        setSearchString(value)
-        dispatch(fetchEverythingsAsync(value));
+        setSearchString(searchString)
+        console.log(page)
+        dispatch(fetchEverythingsAsync({searchString, page}));
     }
+
+    useEffect(()=>{
+        dispatch(fetchEverythingsAsync({searchString, page}))
+    },[dispatch, page])
 
     const triggerClearSearch = () => {
         setClearSearchButton(false)
@@ -110,7 +114,7 @@ const News = ({ title }) => {
                                 <h1 className='col-span-3 font-bold'>Top Headlines</h1>
                                 <div className='flex justify-between gap-8'>
                                     {/* prev button */}
-                                    <button className='w-10' onClick={() => scrollNews(-1, topHeadlineNews.length-1)}>
+                                    <button className='w-10' onClick={() => scrollNews(-1, topHeadlineNews.length - 1)}>
                                         <ArrowBackIosIcon />
                                     </button>
                                     <div className='flex w-[100%] bg-white rounded-lg p-8 overflow-hidden'>
@@ -175,7 +179,7 @@ const News = ({ title }) => {
 
                                     </div>
                                     {/* next button */}
-                                    <button className='w-10' onClick={() => scrollNews(1, topHeadlineNews.length-1)}>
+                                    <button className='w-10' onClick={() => scrollNews(1, topHeadlineNews.length - 1)}>
                                         <ArrowForwardIosIcon />
                                     </button>
                                 </div>
@@ -317,80 +321,18 @@ const News = ({ title }) => {
                             </div>
                         }
 
+
                     </div>
 
                 }
+                <div className='w-full  p-8 rounded-lg bg-gray-200 my-4'>
+                    <Pagination page={page} setPage={setPage}></Pagination>
+                </div>
 
             </div>
+
         </Fragment >
     )
 }
 
 export default News
-
-// top headlines
-
-{/* <div className='w-full  p-8 rounded-lg bg-gray-200 my-4 flex justify-between gap-3'>
-                    <button className='w-10'>
-                        <ArrowBackIosIcon />
-                    </button>
-                    <div className='flex flex-col justify-between h-full w-full bg-white rounded-lg p-8'>
-                        <div className='flex flex-col justify-between h-full'>
-                            <div>
-                                news sourse
-                                <div className='mb-3 flex justify-between items-center font-bold text-[12px] text-gray-500'>
-                                    <div className='flex gap-2 items-center'>
-                                        <NewspaperIcon sx={"font-size : 15px"} />
-                                        <p>BY {"newsItem.author"}</p>
-                                    </div>
-
-                                    <div className='flex gap-0 items-center'>
-                                        <FavoriteBorderIcon sx={"font-size : 15px"} />
-                                        <p>11K</p>
-
-                                    </div>
-                                </div>
-
-                                news thumbnail
-                                <div className='rounded-md mb-1 w-full overflow-hidden gap-8 grid grid-cols-2'>
-                                    <div className='rounded-lg overflow-hidden'>
-                                        <img src={"https://nypost.com/wp-content/uploads/sites/2/2023/12/newspress-collage-64mb2lryz-1703925140771.jpg?quality=75&strip=all&1703907220&w=1024"} alt='news' />
-                                    </div>
-
-                                    <div>
-                                        news title
-                                        <div className='flex justify-between font-normal text-gray-600 text-3xl mb-3'>
-                                            <h1>Paula Abdul sues 'American Idol' executive Nigel Lythgoe for alleged sexual assault - New York Post </h1>
-                                        </div>
-
-
-                                        news descriptoin
-                                        <div className='mb-3'>
-                                            <p className='font-[15px]'>Paula Abdul accused former American Idol and So You Think You Can Dance producer Nigel Lythgoe of allegedly sexually assaulting her multiple times, according to a lawsuit filed Friday in Los Angeles.… [+4488 chars]</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                            </div>
-
-
-                            <div className='flex justify-between font-semibold text-gray-600 text-[10px] mb-5'>
-                                <p>{moment().startOf('day').fromNow()}</p>
-                                <p>
-                                    {"moment(newsItem.publishedAt).format('MMMM Do YYYY')"}
-                                </p>
-                            </div>
-                            <div className='flex items-center flex-col  font-semibold text-gray-600 text-[10px]'>
-
-                                <div>
-                                    <p>1/20</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button className='w-10'>
-                        <ArrowForwardIosIcon />
-                    </button>
-                </div>  */}
