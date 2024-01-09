@@ -13,7 +13,8 @@ export const fetchEverythingsAsync = createAsyncThunk(
 
 const initialState = {
     status: 'idle',
-    newsData: []
+    newsData: [],
+    totalNews : 0
 }
 
 
@@ -28,13 +29,15 @@ export const EverythingSlice = createSlice({
 
         builder.addCase(fetchEverythingsAsync.fulfilled, (state, action) => {
             state.status = "idle"
-            state.newsData = action.payload
+            state.newsData = action.payload.articles
+            state.totalNews = action.payload.totalResults
         })
     }
 })
 
 
 export const selectEverythingNews = (state)=>state.everythings.newsData
+export const selectTotalEverytingNews = (state)=>state.everythings.totalNews
 
 
 export default EverythingSlice.reducer;
