@@ -11,8 +11,7 @@ import { Link } from 'react-router-dom';
 import { countries } from '../../jsonApis/country';
 import Loader from '../pages/Loader'
 import { fetchTopHeadlinesAsync, selectLoader, selectTopHeadlines } from '../../redux/topHeadlines/topHeadlinesSlice';
-import { fetchEverythingsAsync, selectEverythingNews, selectTotalEverytingNews } from '../../redux/everythings/everythingSlice';
-import Pagination from './Pagination';
+import { fetchEverythingsAsync, selectEverythingNews } from '../../redux/everythings/everythingSlice';
 
 
 
@@ -20,15 +19,14 @@ const News = ({ title }) => {
     const dispatch = useDispatch()
     const topHeadlineNews = useSelector(selectTopHeadlines)
     const everythingNews = useSelector(selectEverythingNews)
-    const totalEverythingNews = useSelector(selectTotalEverytingNews);
+    // const totalEverythingNews = useSelector(selectTotalEverytingNews);
     const loaderStatus = useSelector(selectLoader)
     const [country, setCountry] = useState('in')
     const [searchString, setSearchString] = useState('')
     const [clearSearchButton, setClearSearchButton] = useState(false)
     const [showHeadlineNum, setShowHeadlineNum] = useState(0)
-    const [page, setPage] = useState({ pageNum: 1, newsPerPage: 96 })
     useEffect(() => {
-        dispatch(fetchTopHeadlinesAsync({ country, title, page }))
+        dispatch(fetchTopHeadlinesAsync({ country, title }))
     }, [dispatch, country, title])
 
 
@@ -58,13 +56,12 @@ const News = ({ title }) => {
             setClearSearchButton(false)
         }
         setSearchString(searchString)
-        console.log(page)
-        dispatch(fetchEverythingsAsync({searchString, page}));
+        dispatch(fetchEverythingsAsync({searchString}));
     }
 
     useEffect(()=>{
-        dispatch(fetchEverythingsAsync({searchString, page}))
-    },[dispatch, page])
+        dispatch(fetchEverythingsAsync({searchString}))
+    },[dispatch])
 
     const triggerClearSearch = () => {
         setClearSearchButton(false)
@@ -326,9 +323,7 @@ const News = ({ title }) => {
                     </div>
 
                 }
-                <div className='w-full  p-8 rounded-lg bg-gray-200 my-4'>
-                    <Pagination page={page} setPage={setPage} totalNews={totalEverythingNews}></Pagination>
-                </div>
+                
 
             </div>
 
